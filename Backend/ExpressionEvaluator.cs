@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Reflection.Metadata;
 
 namespace Backend;
@@ -15,6 +16,7 @@ public static class ExpressionEvaluator
         {
             if (IsOperator(item))
             {
+                posfix += ' '; // space to separate the numbers
                 if (item == ')')
                 {
                     var ope = stack.Pop();
@@ -38,7 +40,11 @@ public static class ExpressionEvaluator
                         }
                         else
                         {
-                            posfix += stack.Pop();
+
+                            while (stack.Count > 0 && PriorityInfix(item) <= PriorityStack(stack.Peek()))
+                            {
+                                posfix += stack.Pop();
+                            }
                             stack.Push(item);
                         }
                     }
@@ -49,10 +55,10 @@ public static class ExpressionEvaluator
                 posfix += item;
             }
         }
-        do
+        while (stack.Count > 0)
         {
             posfix += stack.Pop();
-        } while (stack.Count != 0);
+        }
         return posfix;
     }
 
@@ -83,18 +89,29 @@ public static class ExpressionEvaluator
     private static double EvalutePostfix(string postfix)
     {
         var stack = new Stack<double>();
+        var number = string.Empty;
         foreach (var item in postfix)
         {
+            if (char.IsDigit(item) || item == '.')
+            {
+                number += item;
+                continue;
+            }
+            if (number != string.Empty)
+            {
+                stack.Push(double.Parse(number, CultureInfo.InvariantCulture));
+                number = string.Empty;
+            }
             if (IsOperator(item))
             {
                 var ope2 = stack.Pop();
                 var ope1 = stack.Pop();
                 stack.Push(Calculate(ope1, ope2, item));
             }
-            else
-            {
-                stack.Push(char.GetNumericValue(item));
-            }
+        }
+        if (number != string.Empty)
+        {
+            stack.Push(double.Parse(number, CultureInfo.InvariantCulture));
         }
         return stack.Pop();
     }
