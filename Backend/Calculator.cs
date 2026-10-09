@@ -90,7 +90,7 @@ public class Calculator
         }
         catch (Exception)
         {
-            Display = "Error: expresión inválida";
+            Display = "Paila: expresión inválida";
             _expression = string.Empty;
             _justEvaluated = false;
         }
