@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="Backend/Backend.csproj"/>
-  <Project Path="Frontend.Windows/Frontend.Windows.csproj"/>
-  <Project Path="Frontend.console/Frontend.console.csproj"/>
+  <Project Path="Backend/Backend.csproj" />
+  <Project Path="Frontend.Windows/Frontend.Windows.csproj" />
+  <Project Path="Frontend.Calculator/Frontend.Calculator.csproj" />
+  <Project Path="Frontend.console/Frontend.console.csproj" />
 </Solution>

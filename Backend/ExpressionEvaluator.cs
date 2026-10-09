@@ -6,8 +6,10 @@ namespace Backend;
 
 public static class ExpressionEvaluator
 {
+    // Public Methods
     public static double Evalute(string infix) => EvalutePostfix(ToPostfix(infix));
 
+    // Private Methods
     private static string ToPostfix(string infix)
     {
         var posfix = string.Empty;
@@ -16,7 +18,7 @@ public static class ExpressionEvaluator
         {
             if (IsOperator(item))
             {
-                posfix += ' '; // space to separate the numbers
+                posfix += ' '; // separa el número anterior (permite varios dígitos)
                 if (item == ')')
                 {
                     var ope = stack.Pop();
@@ -40,7 +42,7 @@ public static class ExpressionEvaluator
                         }
                         else
                         {
-
+                            // while en lugar de if: saca todos los de mayor o igual prioridad
                             while (stack.Count > 0 && PriorityInfix(item) <= PriorityStack(stack.Peek()))
                             {
                                 posfix += stack.Pop();
@@ -52,7 +54,7 @@ public static class ExpressionEvaluator
             }
             else
             {
-                posfix += item;
+                posfix += item; // dígitos y punto decimal se van acumulando
             }
         }
         while (stack.Count > 0)
@@ -89,7 +91,7 @@ public static class ExpressionEvaluator
     private static double EvalutePostfix(string postfix)
     {
         var stack = new Stack<double>();
-        var number = string.Empty;
+        var number = string.Empty; // número que se está leyendo
         foreach (var item in postfix)
         {
             if (char.IsDigit(item) || item == '.')
@@ -97,6 +99,7 @@ public static class ExpressionEvaluator
                 number += item;
                 continue;
             }
+            // Espacio u operador: termina el número actual
             if (number != string.Empty)
             {
                 stack.Push(double.Parse(number, CultureInfo.InvariantCulture));
