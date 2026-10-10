@@ -18,7 +18,7 @@ public static class ExpressionEvaluator
         {
             if (IsOperator(item))
             {
-                posfix += ' '; // separa el número anterior (permite varios dígitos)
+                posfix += ' '; // separates the previous number (allows multiple digits)
                 if (item == ')')
                 {
                     var ope = stack.Pop();
@@ -54,7 +54,7 @@ public static class ExpressionEvaluator
             }
             else
             {
-                posfix += item; // dígitos y punto decimal se van acumulando
+                posfix += item; // number or space
             }
         }
         while (stack.Count > 0)
@@ -91,7 +91,7 @@ public static class ExpressionEvaluator
     private static double EvalutePostfix(string postfix)
     {
         var stack = new Stack<double>();
-        var number = string.Empty; // número que se está leyendo
+        var number = string.Empty; // number read
         foreach (var item in postfix)
         {
             if (char.IsDigit(item) || item == '.')
@@ -99,7 +99,7 @@ public static class ExpressionEvaluator
                 number += item;
                 continue;
             }
-            // Espacio u operador: termina el número actual
+            // space or operator
             if (number != string.Empty)
             {
                 stack.Push(double.Parse(number, CultureInfo.InvariantCulture));
